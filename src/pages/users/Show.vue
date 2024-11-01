@@ -30,8 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mt-5">
-    <div class="row g-3">
+
 
       <div v-if="loading" class="spinner-border" role="status">
         <span class="sr-only"></span>
@@ -40,8 +39,7 @@ export default {
       <div v-else class="col-md-4">
         <UserCardView :user="user"/>
       </div>
-    </div>
-  </div>
+
 </template>
 
 <style scoped>
