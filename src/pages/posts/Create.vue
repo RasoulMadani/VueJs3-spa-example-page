@@ -1,6 +1,7 @@
 <script>
 import {reactive, ref} from "vue";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 export default {
   setup() {
@@ -39,7 +40,12 @@ export default {
       })
           .then((response) => {
             loading.value = false;
-            console.log(response.data);
+            Swal.fire({
+              title: 'Thanks!',
+              text: 'Post created successfully.',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            })
           })
           .catch((error) => {
             console.log(error);
