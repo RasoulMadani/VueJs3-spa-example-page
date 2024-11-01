@@ -9,13 +9,13 @@ export default {
     UserCardView
   },
   setup() {
-    const users = ref([]);
+    const user = ref({});
     const loading = ref(true);
     const route = useRoute();
-    function getUsers() {
-      axios.get("https://jsonplaceholder.typicode.com/users")
+    function getUser() {
+      axios.get(`https://jsonplaceholder.typicode.com/users/${route.params.id}`)
           .then((response) => {
-            users.value = response.data;
+            user.value = response.data;
             loading.value = false;
           })
           .catch((error) => {
@@ -23,27 +23,25 @@ export default {
           })
     }
 
-    getUsers();
-    return {users,loading,route}
+    getUser();
+    return {user,loading}
   }
 }
 </script>
 
 <template>
-  <div v-if="route.params.id === undefined" class="container mt-5">
+  <div class="container mt-5">
     <div class="row g-3">
 
       <div v-if="loading" class="spinner-border" role="status">
         <span class="sr-only"></span>
       </div>
 
-      <div v-else class="col-md-4" v-for="user in users" :key="user.id">
+      <div v-else class="col-md-4">
         <UserCardView :user="user"/>
       </div>
     </div>
-
   </div>
-  <router-view v-else></router-view>
 </template>
 
 <style scoped>
