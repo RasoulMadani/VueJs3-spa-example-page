@@ -5,13 +5,15 @@ import {useRoute} from "vue-router";
 
 export default {
   setup() {
-    const posts = ref([]);
+    const post = ref({});
     const loading = ref(true);
-
-    function getPosts() {
-      axios.get("https://jsonplaceholder.typicode.com/posts")
+    const route = useRoute();
+    function getPost() {
+      axios.get(` https://jsonplaceholder.typicode.com/posts/${route.params.id}` )
           .then((response) => {
-            posts.value = response.data;
+            console.log(response.data);
+            post.value = response.data;
+            console.log(post.value.title);
             loading.value = false;
           })
           .catch((error) => {
@@ -19,8 +21,8 @@ export default {
           })
     }
 
-    getPosts();
-    return {posts,loading}
+    getPost();
+    return {post,loading,route}
   }
 }
 </script>
@@ -32,11 +34,13 @@ export default {
         <span class="sr-only"></span>
       </div>
 
-      <div v-else class="col-md-6" v-for="post in posts" :key="post.id">
+      <div v-else class="col-md-6">
         <div class="card" >
-          <router-link class="card-header" :to="{name: 'postId',params: { id: post.id } }">
+          <div class="card-header">
             {{ post.title }}
-          </router-link>
+          </div>
+
+
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Username : {{post.body}}</li>
 

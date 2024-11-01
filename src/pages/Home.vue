@@ -8,6 +8,7 @@
     <div class="col-md-6">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A commodi consequatur cumque dignissimos dolore eaque esse eveniet exercitationem expedita fugit, illo maiores mollitia nostrum optio perferendis porro quam rerum ut voluptate voluptatem. Aliquam cumque dolor labore obcaecati quis, soluta temporibus?</p>
       <router-link class="btn btn-dark" :to="{ name: 'users' }">Users</router-link>
+      <router-link class="btn btn-light ms-3" :to="{ name: 'posts' }">Posts</router-link>
     </div>
   </div>
 </div>

@@ -11,7 +11,6 @@ export default {
   setup() {
     const users = ref([]);
     const loading = ref(true);
-    const route = useRoute();
     function getUsers() {
       axios.get("https://jsonplaceholder.typicode.com/users")
           .then((response) => {
@@ -24,7 +23,7 @@ export default {
     }
 
     getUsers();
-    return {users,loading,route}
+    return {users,loading}
   }
 }
 </script>
