@@ -8,9 +8,9 @@ export default {
 
 <template>
   <div class="card" >
-    <div class="card-header">
+    <router-link class="card-header" :to="{name: 'userId',params: { id: user.id } }">
       {{ user.name }}
-    </div>
+    </router-link>
     <ul class="list-group list-group-flush">
       <li class="list-group-item">Username : {{user.username}}</li>
       <li class="list-group-item">Email : {{user.email}}</li>
