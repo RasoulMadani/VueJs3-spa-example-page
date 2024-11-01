@@ -26,7 +26,9 @@ export default {
 </script>
 
 <template>
-
+      <div>
+        <router-link class="btn btn-dark" :to="{name : 'createPost'}">Create Post</router-link>
+      </div>
 
       <div v-if="loading" class="spinner-border" role="status">
         <span class="sr-only"></span>
