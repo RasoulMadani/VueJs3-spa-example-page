@@ -2,43 +2,22 @@
 import {reactive, ref} from "vue";
 import axios from "axios";
 import Swal from 'sweetalert2'
+import PostForm from "../../components/posts/Form.vue";
 
 export default {
+  components:{
+    PostForm
+  },
   setup() {
-    const form = reactive({
-      title: "",
-      titleErrorText: "",
-      body: "",
-      bodyErrorText: "",
-    })
     const loading = ref(false);
-    function validate() {
-      if (form.title === "") {
-        form.titleErrorText = "Title is required";
-      } else {
-        form.titleErrorText = "";
-      }
-
-      if (form.body === "") {
-        form.bodyErrorText = "Title is required";
-      } else {
-        form.bodyErrorText = "";
-      }
-
-      if (form.title !== "" && form.body !== "") {
-        loading.value = true;
-        createPost();
-      }
-      console.log(form.titleErrorText);
-    }
-
-    function createPost() {
+    function createPost(formData) {
+      loading.value = true;
       axios.post("https://jsonplaceholder.typicode.com/posts", {
-        title: form.title,
-        body: form.body,
+        title: formData.title,
+        body: formData.body,
         userId: 1,
       })
-          .then((response) => {
+          .then(() => {
             loading.value = false;
             Swal.fire({
               title: 'Thanks!',
@@ -53,7 +32,7 @@ export default {
     }
 
     return {
-      form, validate,loading
+      createPost,loading
     }
   }
 }
@@ -63,35 +42,8 @@ export default {
 
   <div class="col-md-6 ">
     <h2 class="mb-5">Create Post :</h2>
-    <form @submit.prevent="validate">
-      <div class="form-group">
-        <label for="exampleInputEmail1"
 
-        >Title</label>
-        <input
-
-            type="text" class="form-control"
-            v-model.lazy.trim="form.title"
-
-        >
-        <div class="form-text text-danger">
-          {{ form.titleErrorText }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Body</label>
-        <textarea
-            v-model.lazy.trim="form.body" type="text" class="form-control"/>
-        <div class="form-text text-danger">
-          {{ form.bodyErrorText }}
-        </div>
-      </div>
-      <button type="submit" class="btn btn-dark mt-4" :disabled="loading">
-        <div v-if="loading" class="spinner-border spinner-border-sm" role="status"></div>
-        Create Post
-      </button>
-    </form>
+    <PostForm @formData="createPost" :button-loading="loading" />
   </div>
 
 </template>
