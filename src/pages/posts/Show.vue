@@ -47,7 +47,7 @@ export default {
       </ul>
       <div class="card-footer">
         <button class="btn btn-sm btn-danger me-4">Delete</button>
-        <button class="btn btn-sm btn-dark">Edit</button>
+        <router-link :to="{name:'editPost',params:{id:post.id}}" class="btn btn-sm btn-dark">Edit</router-link>
       </div>
     </div>
   </div>

@@ -1,26 +1,24 @@
 <script>
-import {reactive, ref} from "vue";
+import { ref} from "vue";
 import axios from "axios";
 import Swal from 'sweetalert2'
 import {useRoute} from "vue-router";
+import PostForm from "../../components/posts/Form.vue";
 
 export default {
+  components:{
+    PostForm
+  },
   setup() {
-    const form = reactive({
-      title: "",
-      titleErrorText: "",
-      body: "",
-      bodyErrorText: "",
-    })
     const loading = ref(false);
+    const post = ref({});
     const route = useRoute();
-
+    const pageLoading = ref(true);
     function getPost() {
       axios.get(` https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
           .then((response) => {
-            console.log(response.data);
-            form.title = response.data.title;
-            form.body = response.data.body;
+            post.value = response.data;
+            pageLoading.value = false;
           })
           .catch((error) => {
             console.log(error);
@@ -28,27 +26,9 @@ export default {
     }
 
     getPost();
-    function validate() {
-      if (form.title === "") {
-        form.titleErrorText = "Title is required";
-      } else {
-        form.titleErrorText = "";
-      }
 
-      if (form.body === "") {
-        form.bodyErrorText = "Title is required";
-      } else {
-        form.bodyErrorText = "";
-      }
-
-      if (form.title !== "" && form.body !== "") {
-        loading.value = true;
-        updatePost();
-      }
-      console.log(form.titleErrorText);
-    }
-
-    function updatePost() {
+    function updatePost(form) {
+      loading.value = true;
       axios.put(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`, {
         title: form.title,
         body: form.body,
@@ -70,45 +50,20 @@ export default {
     }
 
     return {
-      form, validate,loading
+      loading,updatePost,post,pageLoading
     }
   }
 }
 </script>
 
 <template>
-
-  <div class="col-md-6 ">
+  <div v-if="pageLoading" class="spinner-border" role="status">
+    <span class="sr-only"></span>
+  </div>
+  <div v-else class="col-md-6 ">
     <h2 class="mb-5">Edit Post :</h2>
-    <form @submit.prevent="validate">
-      <div class="form-group">
-        <label for="exampleInputEmail1"
 
-        >Title</label>
-        <input
-
-            type="text" class="form-control"
-            v-model.lazy.trim="form.title"
-
-        >
-        <div class="form-text text-danger">
-          {{ form.titleErrorText }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Body</label>
-        <textarea rows="6"
-            v-model.lazy.trim="form.body" type="text" class="form-control"/>
-        <div class="form-text text-danger">
-          {{ form.bodyErrorText }}
-        </div>
-      </div>
-      <button type="submit" class="btn btn-dark mt-4" :disabled="loading">
-        <div v-if="loading" class="spinner-border spinner-border-sm" role="status"></div>
-        Edit Post
-      </button>
-    </form>
+    <PostForm @formData="updatePost" :button-loading="loading" button-text="Edit Post"  :post="post" />
   </div>
 
 </template>

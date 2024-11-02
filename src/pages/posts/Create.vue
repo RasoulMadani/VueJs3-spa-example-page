@@ -43,7 +43,7 @@ export default {
   <div class="col-md-6 ">
     <h2 class="mb-5">Create Post :</h2>
 
-    <PostForm @formData="createPost" :button-loading="loading" />
+    <PostForm @formData="createPost" :button-loading="loading" button-text="Create Post" />
   </div>
 
 </template>

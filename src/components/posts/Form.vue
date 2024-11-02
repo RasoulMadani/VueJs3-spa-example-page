@@ -4,10 +4,12 @@ import {reactive, ref} from "vue";
 export default {
   props:{
     buttonLoading:Boolean,
+    buttonText:String,
+    post:Object
   },
   setup(props, { emit }) {
     console.log(
-        props
+        props.post
     )
     const form = reactive({
       title: "",
@@ -15,6 +17,14 @@ export default {
       body: "",
       bodyErrorText: "",
     })
+    function setInput(){
+      if(props.post !== undefined){
+        form.title= props.post.title;
+        form.body= props.post.body;
+      }
+    }
+    setInput();
+
 
     function validate() {
       if (form.title === "") {
@@ -66,7 +76,7 @@ export default {
     </div>
     <button type="submit" class="btn btn-dark mt-4" :disabled="buttonLoading">
       <div v-if="buttonLoading" class="spinner-border spinner-border-sm" role="status"></div>
-      Create Post
+      {{ buttonText }}
     </button>
   </form>
 </template>
