@@ -2,6 +2,7 @@
 import axios from "axios";
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import Swal from "sweetalert2";
 
 export default {
   setup() {
@@ -22,7 +23,23 @@ export default {
     }
 
     getPost();
-    return {post, loading, route}
+
+
+    function postDelete(){
+      axios.delete(` https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
+          .then(() => {
+            Swal.fire({
+              title: 'Thanks!',
+              text: `Post (${route.params.id}) deleted successfully.`,
+              icon: 'warning',
+              confirmButtonText: 'Ok'
+            })
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    }
+    return {post, loading, route,postDelete}
   }
 }
 </script>
@@ -46,7 +63,7 @@ export default {
 
       </ul>
       <div class="card-footer">
-        <button class="btn btn-sm btn-danger me-4">Delete</button>
+        <button @click="postDelete" class="btn btn-sm btn-danger me-4">Delete</button>
         <router-link :to="{name:'editPost',params:{id:post.id}}" class="btn btn-sm btn-dark">Edit</router-link>
       </div>
     </div>
